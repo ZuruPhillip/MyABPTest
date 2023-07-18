@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -12,6 +12,8 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using MyAbp.Demo.Todos;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace MyAbp.Demo.EntityFrameworkCore;
 
@@ -52,6 +54,10 @@ public class DemoDbContext :
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
 
     #endregion
+    /// <summary>
+    /// 
+    /// </summary>
+    public DbSet<Todo> Todos { get; set; }
 
     public DemoDbContext(DbContextOptions<DemoDbContext> options)
         : base(options)
@@ -82,5 +88,15 @@ public class DemoDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
+
+        builder.Entity<Todo>(b =>
+        {
+            b.ToTable(DemoConsts.DbTablePrefix + "Todos", DemoConsts.DbSchema, table => table.HasComment(""));
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
     }
 }

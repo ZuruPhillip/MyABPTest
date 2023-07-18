@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
+using MyAbp.Demo.Permissions;
 using MyAbp.Demo.Localization;
 using MyAbp.Demo.MultiTenancy;
 using Volo.Abp.Identity.Web.Navigation;
@@ -18,7 +19,7 @@ public class DemoMenuContributor : IMenuContributor
         }
     }
 
-    private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
+    private async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
         var administration = context.Menu.GetAdministration();
         var l = context.GetLocalizer<DemoResource>();
@@ -46,6 +47,12 @@ public class DemoMenuContributor : IMenuContributor
         administration.SetSubItemOrder(IdentityMenuNames.GroupName, 2);
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
 
-        return Task.CompletedTask;
+        //return Task.CompletedTask;
+        if (await context.IsGrantedAsync(DemoPermissions.Todo.Default))
+        {
+            context.Menu.AddItem(
+                new ApplicationMenuItem(DemoMenus.Todo, l["Menu:Todo"], "/Todos/Todo")
+            );
+        }
     }
 }

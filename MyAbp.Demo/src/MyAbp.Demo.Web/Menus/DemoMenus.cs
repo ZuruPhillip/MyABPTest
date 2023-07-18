@@ -1,4 +1,4 @@
-﻿namespace MyAbp.Demo.Web.Menus;
+namespace MyAbp.Demo.Web.Menus;
 
 public class DemoMenus
 {
@@ -7,4 +7,5 @@ public class DemoMenus
 
     //Add your menu items here...
 
+    public const string Todo = Prefix + ".Todo";
 }
